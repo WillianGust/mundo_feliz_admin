@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  
+  resources :pedidos do 
+    resources :pedido_produtos
+  end
+  resources :clientes
   resources :tipo_produtos
   resources :produtos
   root to: 'home#index'
