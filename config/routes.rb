@@ -11,5 +11,8 @@ Rails.application.routes.draw do
   get '/home', to: 'home#index'
   get 'home/index'
   get '/login', to: 'login#index'
+  post '/login/logar', to: 'login#logar'
+  
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
