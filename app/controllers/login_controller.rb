@@ -1,5 +1,5 @@
 class LoginController < ApplicationController
-  skip_before_action :verify_authenticity_token
+  skip_before_action :verify_authenticity_token, :valida_logado
   layout "login"
   
   def index;end
@@ -23,5 +23,10 @@ class LoginController < ApplicationController
       redirect_to "/login"
     
     end
+  end
+
+  def sair
+    cookies[:mundo_feliz_admin] = nil
+    redirect_to "/login"
   end
 end
