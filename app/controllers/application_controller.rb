@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
-  before_action :valida_logado
+  before_action :valida_logado_admin
   
-  def valida_logado
+  def valida_logado_admin
     if cookies[:mundo_feliz_admin].present?
       hash_admin = JSON.parse(cookies[:mundo_feliz_admin])
       if hash_admin["id"].present?

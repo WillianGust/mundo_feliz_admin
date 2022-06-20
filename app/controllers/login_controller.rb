@@ -1,5 +1,5 @@
 class LoginController < ApplicationController
-  skip_before_action :verify_authenticity_token, :valida_logado
+  skip_before_action :verify_authenticity_token, :valida_logado_admin
   layout "login"
   
   def index;end
@@ -16,7 +16,7 @@ class LoginController < ApplicationController
       }
       cookies[:mundo_feliz_admin] = { value: value.to_json, expires: time, httponly: true }
 
-      redirect_to "/home"
+      redirect_to "/admin"
 
     else
       flash[:error] = "Email ou senha invalidos"
