@@ -3,5 +3,6 @@ class HomeController < ApplicationController
   layout "site"
   
   def index
+    @produtos = Produto.all
   end
 end
