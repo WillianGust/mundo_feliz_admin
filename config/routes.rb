@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   post '/login/logar', to: 'login#logar'
   get '/login/sair', to: 'login#sair'
   get '/home', to: 'home#index'
+
+  get '/produto/:produto_id', to: 'produto#index'
   
   root to: 'home#index'
 

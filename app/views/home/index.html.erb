@@ -1,37 +1,39 @@
 <p id="notice"><%= notice%></p>
 
 <div class="album py-5 bg-light">
- <div class="container">
-<div class="row">
- 
-  <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-right">
-      <% @produtos.each do |produto| %>
-        <div class="col mb-5">
-            <div class="card h-100">
-                <!-- Product image-->
-                <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-              
-              <div class="text-center">
-                <h5 class="fw-bolder mt-2"><a href="/produto/<%= produto.id %>"><%= produto.nome %></a></h5>
-              </div>
-                <!-- Product details-->
-                <div class="card-body p-4">
-                    <div class="text-center">
-                        <!-- Product name-->
-                        <h5 class="fw-bolder"><%= produto.descricao %></h5>
-                        <!-- Product price-->
-                        R$<%=produto.valor%>
+  <div class="container">
+    <div class="row">
+    
+      <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-right">
+          <% if @produtos.blank? %>
+            <h5>Nenhum produto encontrado</h5>
+            <% else %>
+              <% @produtos.each do |produto| %>
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Product image-->
+                        <a href="/produto/<%= produto.id %>"><img class="card-img-top" src="<%= produto.imagem %>" alt="<%= produto.nome %>" /></a>
+                            <div class="card-body p-4">
+                              <h5 class="fw-bolder mt-2"><a href="/produto/<%= produto.id %>"><%= produto.nome %></a></h5>
+                                <div class="fw-bolder"> <!-- Product price-->
+                                  R$<%=produto.valor%>
+                                </div>
+                                <div>
+                                  <p><%= produto.descricao.truncate(50) %></p>
+                                </div>
+                              </div>
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/produto/<%=produto.id%>/adicionar">Adicionar carrinho</a></div>
+                            </div>
                     </div>
                 </div>
-                <!-- Product actions-->
-                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/produto/<%=produto.id%>/adicionar">Adicionar carrinho</a></div>
-                </div>
-            </div>
-        </div>
-      <% end %> 
+              <% end %> 
+      </div>
+          <div class="apple_pagination text-center">
+            <%= will_paginate @produtos, :container => false %>
+          </div>
+        <% end %>
     </div>
-  </div>
 </div>
 
 

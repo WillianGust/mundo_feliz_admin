@@ -1,0 +1,24 @@
+<p id="notice"><%= notice%></p>
+
+<div class="row gx-8 gx-lg-8 row-cols-8 row-cols-md-8 row-cols-xl-8 justify-content-right">           
+  <div class="col mb-8">
+    <div class="card h-100">
+    <!-- Product image-->
+      <img class="card-img-top" src="<%= @produto.imagem %>" alt="<%= @produto.nome %>" />
+        <div class="card-body p-4">
+          <h5 class="fw-bolder mt-2"><%= @produto.nome %></h5>
+            <div class="fw-bolder"> <!-- Product price-->
+              R$<%=@produto.valor%>
+            </div>
+            <div>
+              <p><%= @produto.descricao.truncate(50) %></p>
+            </div>
+          </div>
+        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/produto/<%= @produto.id%>/adicionar">Adicionar carrinho</a></div>
+      </div>
+    </div>
+</div>
+
+
+  
