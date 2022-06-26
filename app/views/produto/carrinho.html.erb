@@ -1,0 +1,41 @@
+<p id="notice"><%= notice%></p>
+  <div class="row">
+  <h1>Carrinho</h1>
+  </div>
+  <hr>
+  <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-right">
+    <% if @produtos.blank? %>
+      <h5>Nenhum produto encontrado</h5>
+      <% else %>
+        <% @produtos.each do |produto| %>
+          <div class="col mb-5">
+              <div class="card h-100">
+                  <!-- Product image-->
+                  <a href="/produto/<%= produto.id %>"><img class="card-img-top" src="<%= produto.imagem %>" alt="<%= produto.nome %>" /></a>
+                      <div class="card-body p-4">
+                        <h5 class="fw-bolder mt-2"><a href="/produto/<%= produto.id %>"><%= produto.nome %></a></h5>
+                          <div class="fw-bolder"> <!-- Product price-->
+                            R$<%=produto.valor%>
+                          </div>
+                          <div>
+                            <p><%= produto.descricao.truncate(50) %></p>
+                          </div>
+                        </div>
+                      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                      <% if existe_carrinho?(produto.id)%>
+                          <div class="text-center"><a class="btn btn-outline-danger mt-auto" href="/produto/<%=produto.id%>/remover">Remover carrinho</a></div>
+                      <% else %>
+                          <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/produto/<%=produto.id%>/adicionar">Adicionar carrinho</a></div>
+                      <% end %>
+                      </div>
+              </div>
+          </div>
+        <% end %>
+        <div class="row">
+        <a href="/carrinho/fechar" class="btn btn-outline-success mt-auto">Fechar compra</a>
+        </div>
+  </div>
+  <% end %>
+    
+
+  

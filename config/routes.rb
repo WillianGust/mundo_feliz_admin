@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   get '/home', to: 'home#index'
 
   get '/produto/:produto_id', to: 'produto#index'
+  get '/produto/:produto_id/adicionar', to: 'produto#adicionar'
+  get '/produto/:produto_id/remover', to: 'produto#remover'
+  get '/carrinho', to: 'produto#carrinho'
   
   root to: 'home#index'
 

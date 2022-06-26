@@ -15,7 +15,12 @@
             </div>
           </div>
         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/produto/<%= @produto.id%>/adicionar">Adicionar carrinho</a></div>
+          <% if existe_carrinho?(@produto.id)%>
+              <div class="text-rigth"><a class="btn btn-outline-danger mt-auto" href="/produto/<%=@produto.id%>/remover">Remover carrinho</a></div>
+          <% else %>
+              <div class="text-rigth"><a class="btn btn-outline-dark mt-auto" href="/produto/<%=@produto.id%>/adicionar">Adicionar carrinho</a></div>
+          <% end %>
+        </div>
       </div>
     </div>
 </div>
