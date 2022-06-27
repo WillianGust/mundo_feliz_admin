@@ -27,24 +27,21 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categorias</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                          
-                              <% TipoProduto.all.each do |tipo_produto|%>
+                            <% TipoProduto.all.each do |tipo_produto|%>
                                 <li><a class="dropdown-item" href="/?tipo_produto=<%= tipo_produto.id %>"><%= tipo_produto.nome %></a></li>
-                              <% end %>
-                              
+                            <% end %>  
                           </ul>
                       </li>
+                      <li class="nav-item"><a class="nav-link" href="/carrinho">Carrinho (<%= quantidade_carrinho %>)</a></li>
+                      <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>  
+                        
+                            <div class=" btn btn-outline-success mt-auto">
+                                <div href="/carrinho" class="bi-cart-fill me-1"></div>
+                                    <a class="nav-link" href="/carrinho"></a>
+                                <span class="badge bg-success text-white ms-1 rounded-pill"><%= quantidade_carrinho %></span>
+                            </div>
                       
-                      <li class="nav-item"><a class="nav-link" href="/carrinho">Carrinho</a></li>
-                      <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
                   </ul>
-                  <form class="d-flex">
-                      <button class="btn btn-outline-dark" type="submit">
-                          <i class="bi-cart-fill me-1"></i>
-                          Cart
-                          <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                      </button>
-                  </form>
               </div>
           </div>
       </nav>        
