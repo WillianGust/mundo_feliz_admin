@@ -20,8 +20,7 @@ class LoginController < ApplicationController
 
     else
       flash[:error] = "Email ou senha invalidos"
-      redirect_to "/login"
-    
+      redirect_to "/login" 
     end
   end
 
