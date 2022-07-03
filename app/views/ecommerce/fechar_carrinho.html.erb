@@ -13,7 +13,9 @@
           </ul>
       <% end %>
     </div> 
-    
+    <h1>
+      Valor total da compra: R$ <%= @produtos.sum(:valor)%>
+    </h1>
   <div class="row">
     <a href="/carrinho/fechar" class="btn btn-outline-success mt-auto">Concluir compra</a>
   </div>
