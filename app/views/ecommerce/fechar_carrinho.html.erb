@@ -13,12 +13,24 @@
           </ul>
       <% end %>
     </div> 
-    <h1>
+    <h1 class="mb-5">
       Valor total da compra: R$ <%= @produtos.sum(:valor)%>
     </h1>
-  <div class="row">
-    <a href="/carrinho/fechar" class="btn btn-outline-success mt-auto">Concluir compra</a>
-  </div>
+
+    <div style="text-align: center;">
+      <h2 class= "mb-2">Gerar boleto</h2>
+        <a href="#">
+          <img src=" https://cdn0.iconfinder.com/data/icons/50-payment-system-icons-2/480/Boleto.png" style="width:150px;">
+        </a>
+      <h2 class= "mb-2">Cartao</h2>
+        <a href="#">
+          <img src=" https://i.pinimg.com/originals/83/4a/1f/834a1f5395b95ee846e18b06828625a9.png" style="width:150px;">
+        </a>
+    </div>
+    
+    <div class="row mt-2" style="text-align: center;">
+      <a href="/carrinho/fechar" class="btn btn-outline-success mt-auto">Concluir compra</a>
+    </div>
 
     
 
