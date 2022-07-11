@@ -40,17 +40,16 @@
           Iugu.setTestMode(true); //Para passar p ara producao colocar false
           Iugu.setAccountID(pg_id);
           Iugu.setup();
-          debugger
           var number = document.getElementById("number").value
           var mes = document.getElementById("mes").value
           var ano = document.getElementById("ano").value
-          var cvv = document.getElementById("cvv").value
           var nome = document.getElementById("nome").value
           var sobrenome = document.getElementById("sobrenome").value
+          var cvv = document.getElementById("cvv").value
 
-          cc = Iugu.CreditCard(number, mes, ano, cvv);
+          debugger
+          cc = Iugu.CreditCard(number, mes, ano, nome, sobrenome, cvv);
           // cc = Iugu.CreditCard("4111111111111111", "12", "2023", "Nome","Sobrenome", "123");
-            alert(cc)
           Iugu.createPaymentToken(cc, function(data){
             debugger
             if (data.errors){  
@@ -58,6 +57,7 @@
               console.log(data.errors);
             } else {
               var token = data.id;
+              
             }
           });
       }
@@ -66,7 +66,7 @@
    
       <fieldset>
         <input class="form-control" type="hidden" id="nome" name="nome" value="<%= cliente.nome_tratado %>">
-        <input class="form-control" type="hidden" id="sobrenome" name="sobrenome" value="<%= cliente.sobrenome %> Silva">
+        <input class="form-control" type="hidden" id="sobrenome" name="sobrenome" value="<%= cliente.sobrenome %>Silva">
         <legend>Dados do cartao</legend>
           <label for="number">Numero Cartao</label>
             <input class="form-control" type="text" id="number" name="number">

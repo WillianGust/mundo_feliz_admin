@@ -11,5 +11,4 @@ class Cliente < ApplicationRecord
     return "" if nome == sobrenome
     sobrenome
   end 
-
 end
