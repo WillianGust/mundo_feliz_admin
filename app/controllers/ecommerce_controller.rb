@@ -31,6 +31,107 @@ class EcommerceController < ApplicationController
       redirect_to "/carrinho"
   end
 
+  def concluir_pagamento
+    Iugu.api_key = "86f80a44f1e5e609be8529f017f0470e"
+      
+    cliente = Cliente.find(params[:cliente_id])
+    
+    if cliente.iugu_customer_id.blank?
+      customer = Iugu::Customer.create({
+        email: cliente.email,
+        name: cliente.nome,
+        notes: "Cartao para ser usado em compras, email #{cliente.email}"
+      })
+      begin
+        cliente.iugu_customer_id = customer.id
+        cliente.save!
+      rescue
+        raise "Problema ao transacionar o cartao, por favor entre em contato com suporte"
+      end
+    else
+      customer = Iugu::Customer.fetch(cliente.iugu_customer_id)
+    end
+
+      customer.payment_methods.create({
+        description: "Cartao #{cliente.nome} - #{cliente.email}",
+        token: params[:token]
+      })
+      
+      valor = valor.gsub(",", ".").to_f if valor.is_a?(String)
+      valor_centavos = (valor *100).to_i
+      months = "1" if months.blank?
+      months = months.to_i recue 1
+      months = 1 if months < 1
+
+      options = {
+        "email" => usuario.email,
+        "months" => months,
+        "itens" => [
+          {
+            "description" => descricao,
+            "quantity" => "1",
+            "price_cents" => valor_centavos
+          }
+        ]
+      }
+
+      if payment_method.present?
+        options["customer_payment_method_id"] = payment_method.id
+        else
+          begin
+            options["method"] = "bank_slip"
+            options["payer"] = {
+              "cpf_cnpj" => cliente.cpf.gsub("-", "").gsub(".",""),
+              "name" => cliente.nome,
+              "phone_prefix" => cliente.telefone[1,2],
+              "phone" => cliente.telefone[4,20].gsub("-", ""),
+              "email" => cliente.email,
+              "address" => {
+                "street" =>cliente.endereco,
+                "number" => cliente.numero,
+                "city" => cliente.cidade,
+                "district" => cliente.cidade,
+                "state" => cliente.estado,
+                "country" => "Brasil",
+                "zip_code" => cliente.cep
+              }
+            }
+            rescue Exception => erro
+              puts "========="
+              puts "====#{erro.message}====="
+              puts "========="
+              puts "====#{erro.backtrace }====="
+              puts "========="
+              raise "Endereco, cpf_cnpj ou telefone nao localizado para pagamento com boleto"
+            end
+        end
+
+    
+    payment_return = Iugu::Charge.create(options)
+
+    if payment_return.errors.present?
+      begin
+        mensagem = payment_return.errors.map{|k,v| "#{k}: #{v.join(",")}"}.join(", ")
+        rescue
+          mensagem = payment_return.errors.inspect rescue "Erro ao fazer pagamento, tente novamente mais tarde"
+        end
+        raise mensagem
+      else
+        if payment_return.respond_to?(:LR)
+          if payment_return.LR != "00"
+            raise payment_return.message
+          end
+        else
+          if payment_return.respond_to?(:identification) && payment_return.respond_to?(:success) #falta colocar um payment_return nao sei o que
+            return payment_return
+          else
+            raise payment_return.message
+          end
+        end
+      end
+      payment_return
+  end 
+
   def carrinho
     if cookies[:carrinho].blank?
       redirect_to "/"
