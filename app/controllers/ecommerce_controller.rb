@@ -52,27 +52,34 @@ class EcommerceController < ApplicationController
       customer = Iugu::Customer.fetch(cliente.iugu_customer_id)
     end
 
-      customer.payment_methods.create({
+    payment_method = customer.payment_methods.create({
         description: "Cartao #{cliente.nome} - #{cliente.email}",
         token: params[:token]
       })
-      
+
+      produtos_id = JSON.parse(cookies[:carrinho]);
+      produtos = Produto.where(id: produtos_id)
+
+      valor = produtos.sum(:valor)
+
       valor = valor.gsub(",", ".").to_f if valor.is_a?(String)
       valor_centavos = (valor *100).to_i
-      months = "1" if months.blank?
-      months = months.to_i recue 1
-      months = 1 if months < 1
+      months = 1 
+
+      itens_pedido_iugu = []
+
+      produtos.each do |produto|
+        itens_pedido_iugu << {
+            "description" => produto.descricao,
+            "quantity" => "1",
+            "price_cents" => (produto.valor *100).to_i 
+          } 
+      end
 
       options = {
-        "email" => usuario.email,
+        "email" => cliente.email,
         "months" => months,
-        "itens" => [
-          {
-            "description" => descricao,
-            "quantity" => "1",
-            "price_cents" => valor_centavos
-          }
-        ]
+        "itens" => itens_pedido_iugu
       }
 
       if payment_method.present?
@@ -129,8 +136,16 @@ class EcommerceController < ApplicationController
           end
         end
       end
-      payment_return
+
+      cookies[:valor] = { value: valor.round(2), expires: 1.hour.from_now, httponly: true }
+      cookies[:comprovante] = { value: payment_return.pdf, expires: 1.hour.from_now, httponly: true }
+      cookies[:carrinho] = nil
   end 
+
+  def compra_concluida 
+    @valor = cookies[:valor]
+    @comprovante = cookies[:comprovante]
+  end
 
   def carrinho
     if cookies[:carrinho].blank?

@@ -59,10 +59,11 @@
             } else {
               var token = data.id;
               debugger
-              $.post("/cliente/concluir-pagamento",{token: token, cliente_id: cliente_id}).done(function(){
-                alert("second success");
+              $.post("/cliente/concluir-pagamento", {token: token, cliente_id: cliente_id}).done(function(){
+                // alert("Compra realizada com sucesso");
+                window.location.href = "/cliente/compra-concluida"
               }).fail(function(){
-                alert("error");
+                alert("Erro na compra");
               });  
             }
           });
