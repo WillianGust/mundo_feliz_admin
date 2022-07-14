@@ -137,12 +137,28 @@ class EcommerceController < ApplicationController
         end
       end
 
+      pedido = Pedido.new
+      pedido.cliente = cliente
+      pedido.valor_total = valor
+      pedido.save
+
+      produtos.each do |produto|
+        pedido_produto = PedidoProduto.new
+        pedido_produto.pedido = produto
+        pedido_produto.pedido = pedido
+        pedido_produto.valor = produto.valor
+        quantidade = 1
+        pedido_produto.save
+      end
+
+      cookies[:pedido_id] = { value: pedido.id, expires: 1.hour.from_now, httponly: true }
       cookies[:valor] = { value: valor.round(2), expires: 1.hour.from_now, httponly: true }
       cookies[:comprovante] = { value: payment_return.pdf, expires: 1.hour.from_now, httponly: true }
       cookies[:carrinho] = nil
   end 
 
   def compra_concluida 
+    @id = cookies[:pedido_id]
     @valor = cookies[:valor]
     @comprovante = cookies[:comprovante]
   end
