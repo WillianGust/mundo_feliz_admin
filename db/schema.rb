@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_11_200842) do
+ActiveRecord::Schema.define(version: 2022_07_15_153335) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,9 @@ ActiveRecord::Schema.define(version: 2022_07_11_200842) do
     t.float "valor_total"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "transacao_id"
+    t.string "numero_boleto"
+    t.string "pdf_boleto"
     t.index ["cliente_id"], name: "index_pedidos_on_cliente_id"
   end
 

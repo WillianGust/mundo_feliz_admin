@@ -52,10 +52,14 @@ class EcommerceController < ApplicationController
       customer = Iugu::Customer.fetch(cliente.iugu_customer_id)
     end
 
-    payment_method = customer.payment_methods.create({
-        description: "Cartao #{cliente.nome} - #{cliente.email}",
-        token: params[:token]
-      })
+      if params[:token].presentÉ
+        payment_method = customer.payment_methods.create({
+          description: "Cartao #{cliente.nome} - #{cliente.email}",
+          token: params[:token]
+        })
+      else
+        payment_method = nil
+      end
 
       produtos_id = JSON.parse(cookies[:carrinho]);
       produtos = Produto.where(id: produtos_id)
@@ -84,7 +88,17 @@ class EcommerceController < ApplicationController
 
       if payment_method.present?
         options["customer_payment_method_id"] = payment_method.id
-        else
+        else 
+          cliente.telefone = params[:telefone]
+          cliente.email = params[:email]
+          clinte.cep = params[:cep]
+          cliente.endereco = params[:endereco]
+          cliente.numero = params[:numero]
+          cliente.bairro = params[:bairro]
+          cliente.cidade = params[:cidade]
+          cliente.estado = params[:estado]
+          cliente.save
+
           begin
             options["method"] = "bank_slip"
             options["payer"] = {
@@ -138,8 +152,13 @@ class EcommerceController < ApplicationController
       end
 
       pedido = Pedido.new
+      transacao_id = payment_return.id
       pedido.cliente = cliente
       pedido.valor_total = valor
+      if payment_method.blank?
+        pedido.numero_boleto = payment_return.numero_boleto
+        pedido.pdf_boleto = payment_return.pdf
+      end
       pedido.save
 
       produtos.each do |produto|
