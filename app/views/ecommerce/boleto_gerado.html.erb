@@ -1,0 +1,11 @@
+<p id="notice"><%= notice%></p>
+  <div class="row">
+    <h1>Pedido de valor R$ <%= @valor %> concluido com sucesso ID <%= @id %> </h1>
+    <h1>Segue o boleto: </h1>
+    <h1>Numero: <%= @numero_boleto %> </h1>
+  </div>
+  <hr>
+    
+  <div>
+    Gerar <a href="<%= @pdf_boleto %>" target="_blank" >Boleto, imprimir</a>
+  </div> 

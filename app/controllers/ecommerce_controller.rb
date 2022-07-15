@@ -144,7 +144,7 @@ class EcommerceController < ApplicationController
           end
         else
           if payment_return.respond_to?(:identification) && payment_return.respond_to?(:success) #falta colocar um payment_return nao sei o que
-            return payment_return
+            boleto = true
           else
             raise payment_return.message
           end
@@ -152,14 +152,19 @@ class EcommerceController < ApplicationController
       end
 
       pedido = Pedido.new
-      transacao_id = payment_return.id
+      # transacao_id = payment_return.invoice_id
       pedido.cliente = cliente
       pedido.valor_total = valor
       pedido.transacao_id = payment_return.invoice_id
       if payment_method.blank?
         pedido.numero_boleto = payment_return.identification
         pedido.pdf_boleto = payment_return.pdf
+        pedido.status = "Aguardando"
+      else
+        pedido.status = "Pago"
+
       end
+
       pedido.save
 
       produtos.each do |produto|
@@ -171,14 +176,20 @@ class EcommerceController < ApplicationController
         pedido_produto.save
       end
 
-      if payment_method.blank?
-        cookies[:numero_boleto] = { value: payment_return.identification, expires: 1.hour.from_now, httponly: true }
-      end
+      
+      cookies[:numero_boleto] = { value: payment_return.identification, expires: 1.hour.from_now, httponly: true }
       cookies[:pedido_id] = { value: pedido.id, expires: 1.hour.from_now, httponly: true }
       cookies[:valor] = { value: valor.round(2), expires: 1.hour.from_now, httponly: true }
       cookies[:comprovante] = { value: payment_return.pdf, expires: 1.hour.from_now, httponly: true }
       cookies[:carrinho] = nil
   end 
+
+  def boleto_gerado 
+    @id = cookies[:pedido_id]
+    @valor = cookies[:valor]
+    @pdf_boleto = cookies[:comprovante]
+    @numero_boleto = cookies[:numero_boleto]
+  end
 
   def compra_concluida 
     @id = cookies[:pedido_id]
@@ -207,6 +218,16 @@ class EcommerceController < ApplicationController
     end
       produtos = JSON.parse(cookies[:carrinho]);
       @produtos = Produto.where(id: produtos)
+  end
+
+  def confirmar_pagamento
+    params[:data].present? && params[:data][:id].present?
+    pedidos = Pedido.where(transacao_id: params[:data][:id])
+    if pedidos.count > 0
+      pedido = pedidos.first
+      pedido.status = params[:data][:status] == "paid" ? "Pago" : "Aguardando"
+      pedido.save
+    end
   end
 
   def login 

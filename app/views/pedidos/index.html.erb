@@ -11,7 +11,11 @@
     <thead>
       <tr>
         <th>Cliente</th>
+        <th>Status</th>
         <th>Valor total</th>
+        <th>ID transacao</th>
+        <th>Numero boleto</th>
+        <th>Pdf boleto</th>        
         <th></th>
         <th></th>
         <th></th>
@@ -21,7 +25,11 @@
     <tbody>
       <%= content_tag_for(:tr, @pedidos) do |pedido| %>
             <td><%= link_to pedido.cliente.nome, pedido %></td>
+            <td><%= pedido.status %></td>
             <td><%= pedido.valor_total %></td>
+            <td><%= pedido.transacao_id %></td>
+            <td><%= pedido.numero_boleto %></td>
+            <td><%= pedido.pdf_boleto %></td>
             <%#= link_to 'Mostrar', pedido %>
         <td><%= link_to 'Itens Pedido', pedido_pedido_produtos_path(pedido) %></td>
         <td><%= link_to 'Editar', edit_pedido_path(pedido) %></td>

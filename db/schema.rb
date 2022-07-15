@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_15_153335) do
+ActiveRecord::Schema.define(version: 2022_07_15_182325) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 2022_07_15_153335) do
     t.string "transacao_id"
     t.string "numero_boleto"
     t.string "pdf_boleto"
+    t.string "status"
     t.index ["cliente_id"], name: "index_pedidos_on_cliente_id"
   end
 

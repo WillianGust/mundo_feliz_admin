@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   patch '/cliente/seu-boleto', to: 'ecommerce#/boleto_gerado'
   get '/cliente/sair', to: 'ecommerce#sair'
   post '/cliente/concluir-pagamento', to: 'ecommerce#concluir_pagamento'
+  get '/cliente/pagamento', to: 'ecommerce#confirmar_pagamento'
   
   root to: 'home#index'
 

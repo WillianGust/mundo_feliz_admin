@@ -28,7 +28,7 @@ mundofeliz.pagamentoBoleto = function(){
         estado: estado
       }).done(function(){
         // alert("Compra realizada com sucesso");
-        window.location.href = "/cliente/compra-concluida"
+        window.location.href = "/cliente/seu-boleto"
       }).fail(function(){
         alert("Erro na compra");
       }); 
