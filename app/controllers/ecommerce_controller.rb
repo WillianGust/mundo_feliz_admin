@@ -155,8 +155,9 @@ class EcommerceController < ApplicationController
       transacao_id = payment_return.id
       pedido.cliente = cliente
       pedido.valor_total = valor
+      pedido.transacao_id = payment_return.invoice_id
       if payment_method.blank?
-        pedido.numero_boleto = payment_return.numero_boleto
+        pedido.numero_boleto = payment_return.identification
         pedido.pdf_boleto = payment_return.pdf
       end
       pedido.save
@@ -170,6 +171,9 @@ class EcommerceController < ApplicationController
         pedido_produto.save
       end
 
+      if payment_method.blank?
+        cookies[:numero_boleto] = { value: payment_return.identification, expires: 1.hour.from_now, httponly: true }
+      end
       cookies[:pedido_id] = { value: pedido.id, expires: 1.hour.from_now, httponly: true }
       cookies[:valor] = { value: valor.round(2), expires: 1.hour.from_now, httponly: true }
       cookies[:comprovante] = { value: payment_return.pdf, expires: 1.hour.from_now, httponly: true }

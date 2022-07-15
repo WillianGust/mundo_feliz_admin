@@ -5,6 +5,7 @@ mundofeliz.pagamentoBoleto = function(){
     Iugu.setTestMode(true); //Para passar p ara producao colocar false
     Iugu.setAccountID(pg_id);
     Iugu.setup();
+      var cliente_id = document.getElementById("cliente_id").value
       var cpf = document.getElementById("cpf").value
       var telefone = document.getElementById("telefone").value
       var email = document.getElementById("email").value
@@ -16,6 +17,7 @@ mundofeliz.pagamentoBoleto = function(){
       var estado = document.getElementById("estado").value
       $.post("/cliente/concluir-pagamento", {
         cliente_id: cliente_id,
+        cpf: cpf,
         telefone: telefone,
         email: email,
         cep: cep,
