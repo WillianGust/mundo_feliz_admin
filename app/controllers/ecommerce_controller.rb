@@ -32,6 +32,7 @@ class EcommerceController < ApplicationController
   end
 
   def concluir_pagamento
+    
     Iugu.api_key = "86f80a44f1e5e609be8529f017f0470e"
       
     cliente = Cliente.find(params[:cliente_id])
@@ -52,8 +53,10 @@ class EcommerceController < ApplicationController
       customer = Iugu::Customer.fetch(cliente.iugu_customer_id)
     end
 
-      if params[:token].presentÉ
-        payment_method = customer.payment_methods.create({
+      if params[:token].present?
+        debugger
+        # A veificar ID
+        payment_method = Iugu::PaymentMethod.create({
           description: "Cartao #{cliente.nome} - #{cliente.email}",
           token: params[:token]
         })

@@ -51,7 +51,7 @@ mundofeliz.pagamentoBoleto = function(){
       cc = Iugu.CreditCard(number, mes, ano, nome, sobrenome, cvv);
       // cc = Iugu.CreditCard("4111111111111111", "12", "2023", "Nome","Sobrenome", "123");
       Iugu.createPaymentToken(cc, function(data){
-      
+      debugger  
         if (data.errors){  
           alert("erro ao gerar!");
           console.log(data.errors);
